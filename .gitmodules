@@ -1,0 +1,9 @@
+[submodule "skynet"]
+	path = skynet
+	url = https://github.com/lsg2020/skynet
+[submodule "3rd/lua-cjson"]
+	path = 3rd/lua-cjson
+	url = https://github.com/cloudwu/lua-cjson
+[submodule "3rd/luaprofile"]
+	path = 3rd/luaprofile
+	url = https://github.com/lsg2020/luaprofile

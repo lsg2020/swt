@@ -1,0 +1,15 @@
+root = "./skynet/"
+luaservice = "service/?.lua;service/?/main.lua;" .. root.."service/?.lua;"..root.."test/?.lua;"..root.."examples/?.lua;"..root.."test/?/init.lua"
+lualoader = root .. "lualib/loader.lua"
+lua_path = "lualib/?.lua;lualib/?/init.lua;" .. root.."lualib/?.lua;"..root.."lualib/?/init.lua"
+lua_cpath = "build/clualib/?.so;" .. root .. "luaclib/?.so"
+snax = root.."examples/?.lua;"..root.."test/?.lua"
+cpath = "build/cservice/?.so;" .. root.."cservice/?.so"
+
+preload = "./lualib/swt/debug.lua"
+thread = 8
+logger = nil
+logpath = "."
+harbor = 0
+start = "main"	-- main script
+bootstrap = "snlua bootstrap"	-- The service for bootstrap
