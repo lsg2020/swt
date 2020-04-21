@@ -3,7 +3,7 @@ local websocket     = require "http.websocket"
 
 local util      = require "swt.util"
 local global    = require "global"
-local http_helper = require "http_helper"
+local http_helper = require "swt.http_helper"
 
 local agent_mgr = global.agent_mgr
 
@@ -52,5 +52,5 @@ function handle_agent.error(id, err)
 end
 
 return function(router)
-    router:get("/agent", http_helper.upgrade(handle_agent))
+    router:get("/agent", util.bind(http_helper.upgrade, handle_agent))
 end

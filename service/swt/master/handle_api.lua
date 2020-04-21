@@ -3,7 +3,7 @@ local websocket     = require "http.websocket"
 
 local global    = require "global"
 local json      = require "cjson"
-local http_helper   = require "http_helper"
+local http_helper   = require "swt.http_helper"
 
 local agent_mgr = global.agent_mgr
 
@@ -91,7 +91,7 @@ function apis.debug_run(request)
             request.socket_close = true
         end
     }
-    http_helper.upgrade(handle)(request)
+    http_helper.upgrade(handle, request)
 end
 
 function apis.cpu_profiler(request)
@@ -121,7 +121,7 @@ function apis.cpu_profiler(request)
             request.socket_close = true
         end
     }
-    http_helper.upgrade(handle)(request)
+    http_helper.upgrade(handle, request)
 end
 
 return function(router)
