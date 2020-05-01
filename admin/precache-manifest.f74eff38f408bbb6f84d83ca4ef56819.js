@@ -1,46 +1,46 @@
 self.__precacheManifest = [
   {
-    "revision": "3ec6df5dda3485fd102f",
-    "url": "/admin/css/dashboard.9b3791d2.css"
+    "revision": "342e0a3dd2b2b25be689",
+    "url": "/admin/js/dashboard.dddc5105.js"
   },
   {
     "revision": "b6216d61c03e6ce0c9aea6ca7808f7ca",
     "url": "/admin/robots.txt"
   },
   {
-    "revision": "3ec6df5dda3485fd102f",
-    "url": "/admin/js/dashboard.7620ad18.js"
+    "revision": "f21954ba83504d670e86",
+    "url": "/admin/css/login.e330e60a.css"
   },
   {
-    "revision": "c48d63008ecb7d7844f3",
-    "url": "/admin/js/CpuProfiler.e3ad9284.js"
+    "revision": "9754105bb21a7f86721e",
+    "url": "/admin/js/CpuProfiler.74de6dbf.js"
   },
   {
-    "revision": "52f0424b4791f37ae053",
-    "url": "/admin/js/Debug.f6cc2308.js"
+    "revision": "b25e9a547d2e50a11efa",
+    "url": "/admin/js/Debug.0c2eab47.js"
   },
   {
-    "revision": "2699e3086adab0985f83",
-    "url": "/admin/js/login.3b995b3b.js"
+    "revision": "f21954ba83504d670e86",
+    "url": "/admin/js/login.46c81fa9.js"
   },
   {
-    "revision": "433ca7c848ec9c677c86",
-    "url": "/admin/js/app.a2f41e20.js"
+    "revision": "07ca27f0d2cde33bb97b",
+    "url": "/admin/js/app.1ba63f2e.js"
   },
   {
-    "revision": "a5a6b14125f7194ea745",
-    "url": "/admin/js/CpuProfiler~Debug.63369f8e.js"
+    "revision": "dffeae82aba2dedbe9a4",
+    "url": "/admin/js/CpuProfiler~Debug.bead74b8.js"
   },
   {
     "revision": "3a63305ea785aef48a37",
     "url": "/admin/js/chunk-vendors.90891d74.js"
   },
   {
-    "revision": "c934cc9a93fcd7c7f46c",
-    "url": "/admin/js/404.962a48d9.js"
+    "revision": "06a629c693acc8fbfe36",
+    "url": "/admin/js/404.bf729a13.js"
   },
   {
-    "revision": "c3ec674b66b0572c3318c5c4c5e8b8fe",
+    "revision": "7544545fc6842130d50538da081b91a8",
     "url": "/admin/index.html"
   },
   {
@@ -60,19 +60,15 @@ self.__precacheManifest = [
     "url": "/admin/fonts/element-icons.535877f5.woff"
   },
   {
-    "revision": "2699e3086adab0985f83",
-    "url": "/admin/css/login.e330e60a.css"
-  },
-  {
     "revision": "3a63305ea785aef48a37",
     "url": "/admin/css/chunk-vendors.ee57d822.css"
   },
   {
-    "revision": "433ca7c848ec9c677c86",
+    "revision": "07ca27f0d2cde33bb97b",
     "url": "/admin/css/app.bd8a0359.css"
   },
   {
-    "revision": "c934cc9a93fcd7c7f46c",
+    "revision": "06a629c693acc8fbfe36",
     "url": "/admin/css/404.04075428.css"
   }
 ];

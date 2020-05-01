@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/3.6.3/workbox-sw.js");
 
 importScripts(
-  "/admin/precache-manifest.ada93049ecc0f3be2cd406c6f8c81051.js"
+  "/admin/precache-manifest.f74eff38f408bbb6f84d83ca4ef56819.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "vue-typescript-admin-template"});
