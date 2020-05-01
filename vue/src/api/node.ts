@@ -1,20 +1,18 @@
 import request from '@/utils/request'
 
-export const getNodeList = async () => {
-  let data = await request({
+export const getNodeList = async (agents: string[]) => {
+  let data = { agents: agents }
+  let ret = await request({
     url: '/api/agent_list',
-    method: 'get'
+    method: 'post',
+    data
   })
 
-  let ret: Define.Node[] = [];
-  for (let k in data.data) {
-    ret.push(data.data[k] as Define.Node)
-  }
-  return ret
+  return ret.data as Define.Node[]
 }
 
-export const getNodeServices = async (nodeIds: string[]) => {
-  let data = { ids: nodeIds }
+export const getNodeServices = async (agents: string[]) => {
+  let data = { agents: agents }
   let ret =  await request({
     url: '/api/agent_services',
     method: 'post',

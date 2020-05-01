@@ -10,16 +10,13 @@ local agent_mgr = global.agent_mgr
 local apis = {}
 
 -- luacheck: ignore request
-function apis.version(request)
-    return {version = "1.0"}
-end
-
 function apis.agent_list(request)
     local agents = {}
-    agent_mgr:foreach(function(agent)
-        table.insert(agents, agent)
-        return true
-    end)
+    for _, addr in ipairs(request.query.agents) do
+        local agent = agent_mgr:get(addr)
+        table.insert(agents, agent:build_info())
+    end
+
     return agents
 end
 
@@ -30,10 +27,10 @@ function apis.agent_services(request)
         print(service_list)
     ]]
     local output = {}
-    for _, nodeid in pairs(request.query.ids) do
-        local ok, ret, resp = pcall(agent_mgr.debug_run, agent_mgr, nodeid, test, request.query.target)
+    for _, addr in pairs(request.query.agents) do
+        local ok, ret, resp = pcall(agent_mgr.debug_run, agent_mgr, addr, test)
         if ok and ret then
-            output[nodeid] = json.decode(resp)
+            output[addr] = json.decode(resp)
         end
     end
     return output
@@ -44,17 +41,23 @@ local function _debug_run(request, targets, script)
         if request.socket_close then
             return
         end
-        websocket.write(request.id, 
-            json.encode({node_id = target.node.id, addr = target.addr, type = type, msg = msg}), 
+        websocket.write(request.id,
+            json.encode({node_id = target.node.addr, addr = target.addr, type = type, msg = msg}),
             "binary"
         )
     end
 
     local wait_amount = 0
     local function run(target)
-        local ok, ret, err = pcall(agent_mgr.debug_run, agent_mgr, target.node.id, script, target.addr, function(text, index)
-            response(target, "print", {text = text, index = index})
-        end)
+        local ok, ret, err = pcall(agent_mgr.debug_run,
+            agent_mgr,
+            target.node.addr,
+            script,
+            target.addr,
+            function(text, index)
+                response(target, "print", {text = text, index = index})
+            end
+        )
 
         if not ok or not ret then
             response(target, "error", ret or err)
@@ -75,7 +78,7 @@ end
 
 function apis.debug_run(request)
     local handle = {
-        message = function(id, msg)
+        message = function(_, msg)
             local data = json.decode(msg)
             if data.cmd == "run" then
                 local script = data.script
@@ -84,10 +87,10 @@ function apis.debug_run(request)
                 _debug_run(request, targets, script)
             end
         end,
-        error = function(id)
+        error = function()
             request.socket_close = true
         end,
-        close = function(id)
+        close = function()
             request.socket_close = true
         end
     }
@@ -96,7 +99,7 @@ end
 
 function apis.cpu_profiler(request)
     local handle = {
-        message = function(id, msg)
+        message = function(_, msg)
             local data = json.decode(msg)
             if data.cmd == "run" then
                 local time = data.time
@@ -114,10 +117,10 @@ function apis.cpu_profiler(request)
                 _debug_run(request, targets, script)
             end
         end,
-        error = function(id)
+        error = function()
             request.socket_close = true
         end,
-        close = function(id)
+        close = function()
             request.socket_close = true
         end
     }

@@ -14,10 +14,10 @@ end
 -- 启动agent
 --  node_type: 节点类型名
 --  node_name: 节点名
---  master_addr: 连接master地址 例:"127.0.0.1:8000"
-function M.start_agent(node_type, node_name, master_addr)
+--  listen_addr: 监听地址 例:"127.0.0.1:8001"
+function M.start_agent(node_type, node_name, listen_addr)
     local agent = skynet.uniqueservice("swt/agent")
-    skynet.send(agent, "lua", "start", node_type, node_name, master_addr)
+    skynet.send(agent, "lua", "start", node_type, node_name, listen_addr)
 end
 
 

@@ -110,16 +110,21 @@ export default class extends Vue {
   currpage = 1
   pagesize = 5
   nodeServices: DebugService[] = []
+  curNodeServices: DebugService[] = []
   debugScript: string = ''
+  runAmount = 0
 
   websock: any = null
 
   onSelectNodeServiceChange(nodeServices: Define.LuaService[]) {
-    this.currpage = 1
-    this.nodeServices = []
+    this.curNodeServices = []
     nodeServices.forEach((node) => {
-      this.nodeServices.push({ base: node, result: '', tempPrint: '' })
+      this.curNodeServices.push({ base: node, result: '', tempPrint: '' })
     })
+    if (this.runAmount == 0) {
+      this.currpage = 1
+      this.nodeServices = this.curNodeServices
+    }
   }
 
   changePageIndex(index: number) {
@@ -142,13 +147,17 @@ export default class extends Vue {
       baseHost = (r ? r[1] : baseHost)
     }
 
+    this.runAmount++
+    this.currpage = 1
+    this.nodeServices = this.curNodeServices
+
     this.websock = new WebSocket('ws://' + baseHost + '/api/debug_run')
     this.websock.onmessage = async (event: any) => {
       let text = await (new Response(event.data)).text()
       const msg = JSON.parse(text)
       for (let row of this.nodeServices) {
         // let row = this.nodeServices[k]
-        if (row.base.node && msg.node_id == row.base.node.id && msg.addr == row.base.addr) { // eslint-disable-line
+        if (row.base.node && msg.node_id == row.base.node.addr && msg.addr == row.base.addr) { // eslint-disable-line
           if (msg.type == 'print') {
             row.tempPrint += msg.msg.text
 

@@ -1,14 +1,14 @@
 declare namespace Define {
-
     type Node = {
-      id: string
+      addr: string
       type: string
       name: string
+      status: string
     }
 
     type LuaService = {
       node?: Node
       addr: string
       name: string
-    }
+    }    
 }

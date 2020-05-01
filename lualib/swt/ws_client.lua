@@ -81,7 +81,7 @@ function M.new(addr, options)
     local obj = {
         addr = addr,
         conn = nil,
-        close = false,
+        closed = false,
         options = options,
     }
     setmetatable(obj, mt)

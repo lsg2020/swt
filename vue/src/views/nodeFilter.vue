@@ -6,8 +6,8 @@
     服务:<el-select v-model="selectServiceList" placeholder="服务"  @change="onSelectService" collapse-tags multiple default-first-option>
       <el-option v-for="item in searchServiceList" :key="item" :label="item" :value="item"/>
     </el-select>
-    节点匹配:<el-input v-model="selectName" placeholder="例:*1|node2" @change="onSelectName" style="width:250px"></el-input>
-    地址匹配:<el-input v-model="selectServiceAddr" placeholder="例:*a|*9" @change="onSelectServiceAddr" style="width:250px"></el-input>
+    节点:<el-input v-model="selectName" placeholder="例:*a|node2" @change="onSelectName" style="width:250px"></el-input>
+    地址:<el-input v-model="selectServiceAddr" placeholder="例:*a|*9" @change="onSelectServiceAddr" style="width:250px"></el-input>
   </div>
 </template>
 
@@ -27,14 +27,21 @@ export default class NodeFilter extends Vue {
   selectServiceList: string[] = []
   searchServiceList: string[] = []
 
+  nodes: string = ''
+  timer: any
+
   created() {
   }
 
   mounted() {
+    this.nodes = localStorage.getItem('servers') || ''
     this.getNodeList()
+
+    this.timer = setInterval(this.getNodeList, 5 * 1000)
   }
 
   beforeDestroy() {
+    clearInterval(this.timer)
   }
 
   onSelectType() {
@@ -53,7 +60,9 @@ export default class NodeFilter extends Vue {
   }
 
   public async getNodeList() {
-    let nodelist = await ApiNode.getNodeList()
+    let nodes = this.nodes.split('\n')
+
+    let nodelist = await ApiNode.getNodeList(nodes)
     let types: string[] = []
     let selectNodes: Define.Node[] = []
     let id2Node: Map<string, Define.Node> = new Map<string, Define.Node>()
@@ -78,11 +87,11 @@ export default class NodeFilter extends Vue {
       if (this.selectTypeList.length === 0 || this.selectTypeList.indexOf(node.type) !== -1) {
         if (!reName || node.name.match(reName)) {
           selectNodes.push(node)
-          id2Node.set(node.id, node)
+          id2Node.set(node.addr, node)
         }
       }
     }
-    let servicelist = await ApiNode.getNodeServices(selectNodes.map((node) => { return node.id }))
+    let servicelist = await ApiNode.getNodeServices(selectNodes.map((node) => { return node.addr }))
     for (let nodeId in servicelist) {
       let services = servicelist[nodeId]
       for (let serviceAddr in services) {

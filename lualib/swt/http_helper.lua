@@ -84,7 +84,7 @@ local function static(path, options, request)
         cache = options.cache[real_path]
         expire = options.expire or 30 * 100
     end
-    
+
     if not cache or cache.expire < now then
         cache = {expire = now + expire, code = 200, resp = ""}
         local f = io.open(string.sub(real_path, 2), "rb")
