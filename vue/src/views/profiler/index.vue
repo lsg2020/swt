@@ -57,7 +57,8 @@
           label="flamegraph"
           width="150px">
           <template slot-scope="scope">
-            <el-button size="normal" :disabled="scope.row.result == ''" @click="onShowFlameGraph(scope.row)">{{'查看'}}</el-button>
+            <el-button size="normal" :disabled="scope.row.result == ''" @click="onShowFlameGraphCpu(scope.row)">{{'CPU'}}</el-button>
+            <el-button size="normal" :disabled="scope.row.result == ''" @click="onShowFlameGraphMem(scope.row)">{{'MEM'}}</el-button>
           </template>
         </el-table-column>
 
@@ -124,7 +125,7 @@ type DebugService = {
 }
 
 @Component({
-  name: 'CpuProfiler',
+  name: 'Profiler',
   components: {
     NodeFilter,
     flamegraph
@@ -147,7 +148,25 @@ export default class extends Vue {
   buttonText: string = '开始'
   buttonTime: any = 0
 
-  onShowFlameGraph(row: DebugService) {
+  onShowFlameGraphCpu(row: DebugService) {
+    let data = JSON.parse(row.result)
+    let realtime = data.time > data.nodes.value ? data.time : data.nodes.value;
+    data.nodes.rettime = realtime - data.nodes.value;
+
+    let root = {
+      name: "root",
+      value: realtime,
+      rettime: 0,
+      children: [
+        {
+          name: "idle",
+          value: realtime - data.nodes.value,
+          rettime: 0,
+        },
+        data.nodes,
+      ]
+    };
+
     this.dialogTitle = `${row.base.node && row.base.node.name} ${row.base.addr}-${row.base.name}`
     this.flamegraphData = {
       fconfig: {
@@ -168,14 +187,63 @@ export default class extends Vue {
         nametype: 'Function:',   // what are the names in the data?
         removenarrows: true,        // removes narrow functions instead of adding a 'hidden' class
         profile: {
-          shortStack: true,
-          unresolveds: false,
-          v8internals: false,
-          v8gc: true,
-          sysinternals: false
+          total: realtime,
+          get_value: (node: {value: number}) => {
+            return node.value
+          },
         }
       },
-      data: JSON.parse(row.result)
+      data: root
+    }
+    this.showFlameGraph = true
+  }
+
+  onShowFlameGraphMem(row: DebugService) {
+    let data = JSON.parse(row.result)
+    let root = data.nodes;
+
+    this.dialogTitle = `${row.base.node && row.base.node.name} ${row.base.addr}-${row.base.name}`
+    this.flamegraphData = {
+      fconfig: {
+        fonttype: 'Verdana',     // font type
+        fontsize: 12,            // base text size
+        imagewidth: '100%',          // max width, pixels
+        frameheight: 16.0,          // max height is dynamic
+        fontwidth: 0.59,          // avg width relative to fontsize
+        minwidth: 0.1,           // min function width, pixels
+        countname: 'Byte',     // what are the counts in the data?
+        colors: 'hot',         // color theme
+        bgcolor1: '#eeeeee',     // background color gradient start
+        bgcolor2: '#eeeeb0',     // background color gradient stop
+        timemax: Infinity,      // (override the) sum of the counts
+        factor: 1,             // factor to scale counts by
+        hash: true,          // color by function name
+        titletext: 'Flame Graph', // centered heading
+        nametype: 'Function:',   // what are the names in the data?
+        removenarrows: true,        // removes narrow functions instead of adding a 'hidden' class
+        profile: {
+          total: root.alloc_count,
+          get_value: (node: {alloc_count: number}) => {
+            return node.alloc_count
+          },
+          get_sample: (node: any, opts: any, max: number) => {
+            let samples = Math.round((node.etime - node.stime * opts.factor) * 10) / 10
+            let pct = Math.round((100 * samples) / (max * opts.factor) * 10) / 10
+
+            let samples2 = ''
+            if (samples > 1024) {
+              samples2 = `${(samples/1024).toFixed(2)} KB`
+            } else if (samples > 1024 * 1024) {
+              samples2 = `${(samples/1024/1024).toFixed(2)} MB`
+            } else if (samples > 1024 * 1024 * 1024) {
+              samples2 = `${(samples/1024/1024/1024).toFixed(2)} GB`
+            }
+
+            return `${samples} Byte ${samples2} ${pct}%`
+          },
+        }
+      },
+      data: root
     }
     this.showFlameGraph = true
   }
@@ -231,7 +299,7 @@ export default class extends Vue {
     this.currpage = 1
     this.nodeServices = this.curNodeServices
 
-    this.websock = new WebSocket('ws://' + baseHost + '/api/cpu_profiler')
+    this.websock = new WebSocket('ws://' + baseHost + '/api/profiler')
     this.websock.onmessage = async (event: any) => {
       let text = await (new Response(event.data)).text()
       const msg = JSON.parse(text)

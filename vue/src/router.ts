@@ -68,13 +68,13 @@ export default new Router({
     {
       path: '/',
       component: Layout,
-      redirect: '/cpuprofiler',
+      redirect: '/profiler',
       children: [
         {
-          path: 'cpuprofiler',
-          component: () => import(/* webpackChunkName: "CpuProfiler" */ '@/views/cpuprofiler/index.vue'),
+          path: 'profiler',
+          component: () => import(/* webpackChunkName: "Profiler" */ '@/views/profiler/index.vue'),
           meta: {
-            title: 'CpuProfiler',
+            title: 'Profiler',
             icon: 'example'
           }
         }

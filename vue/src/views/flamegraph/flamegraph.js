@@ -371,6 +371,9 @@ const contextify = (function () {
                 name = escapedFunc
                 sampleInfo = `(${samplesTxt} ${countName} ${utils.formatTime(costTime)}), ${pctTxt}%)`
             }
+            if (opts.profile.get_sample) {
+              sampleInfo = opts.profile.get_sample(node, opts, timeMax)
+            }
 
             let x1 = oneDecimal(xpad + stime * widthPerTime)
             let x2 = oneDecimal(xpad + etime * widthPerTime)
@@ -482,7 +485,7 @@ function _normalize_nodes(node, p, ret) {
     func: node.name,
     depth: p.depth,
     stime: p.stime,
-    etime: p.stime + node.value
+    etime: p.stime + p.fconfig.profile.get_value(node),
   })
   if (!node.children) {
     return ret;
@@ -493,28 +496,16 @@ function _normalize_nodes(node, p, ret) {
   let tmptime = 0;
   for (let i = 0; i < node.children.length; i++) {
     let children = node.children[i];
-    _normalize_nodes(children, {stime: p.stime + tmptime, depth: p.depth + 1}, ret)
-    tmptime += children.value;
+    _normalize_nodes(children, {fconfig: p.fconfig, stime: p.stime + tmptime, depth: p.depth + 1}, ret)
+    tmptime += p.fconfig.profile.get_value(children);
   }
   return ret
 }
 function normalize_nodes(data, ret) {
-  let realtime = data.time > data.nodes.value ? data.time : data.nodes.value;
-  data.nodes.rettime = realtime - data.nodes.value
-  let root = {
-    name: "root",
-    value: realtime,
-    rettime: 0,
-    children: [
-      {
-        name: "idle",
-        value: realtime - data.nodes.value,
-        rettime: 0,
-      },
-      data.nodes,
-    ]
-  }
-  return [realtime, _normalize_nodes(root, {stime: 0, depth: 0}, ret)]
+  let fconfig = data.fconfig;
+  let nodes = data.data;
+
+  return [fconfig.profile.total, _normalize_nodes(nodes, {fconfig: fconfig, stime: 0, depth: 0}, ret)]
 }
 
 /**
@@ -528,7 +519,7 @@ function mounted() {
     this.flamegraphData.fconfig.imagewidth = imagewidth;
     // 传输过程中 timemax 会丢失
     this.flamegraphData.fconfig.timemax = Infinity;
-    let normalize = normalize_nodes(this.flamegraphData.data, []);
+    let normalize = normalize_nodes(this.flamegraphData, []);
     this.flamegraphData.parsed = {each: 1, time: normalize[0], nodes: normalize[1]};
     // 计算 svg 其余渲染数据
     const context = contextify(this.flamegraphData.parsed, this.flamegraphData.fconfig);
@@ -708,7 +699,7 @@ function showBigPic() {
     this.flamegraphData.fconfig.imagewidth = imagewidth;
     // 传输过程中 timemax 会丢失
     this.flamegraphData.fconfig.timemax = Infinity;
-    let normalize = normalize_nodes(this.flamegraphData.data, []);
+    let normalize = normalize_nodes(this.flamegraphData, []);
     this.flamegraphData.parsed = {each: 1, time: normalize[0], nodes: normalize[1]};
     // 计算 svg 其余渲染数据
     const context = contextify(this.flamegraphData.parsed, this.flamegraphData.fconfig);

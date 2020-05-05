@@ -71,7 +71,7 @@ $(CLUALIB_DIR)/cjson.so: $(CJSON_SOURCE)
 	gcc $(CFLAGS) -I3rd/lua-cjson $(SHARED) $^ -o $@ $(LDFLAGS)
 
 # lua profile
-LUAPROFILE_SOURCE=3rd/luaprofile/imap.c 3rd/luaprofile/profile.c 3rd/luaprofile/icalltree.c
+LUAPROFILE_SOURCE=3rd/luaprofile/imap.c 3rd/luaprofile/profile.c 3rd/luaprofile/icallpath.c
 
 3rd/luaprofile/imap.c:
 	git submodule update --init 3rd/luaprofile

@@ -97,7 +97,7 @@ function apis.debug_run(request)
     http_helper.upgrade(handle, request)
 end
 
-function apis.cpu_profiler(request)
+function apis.profiler(request)
     local handle = {
         message = function(_, msg)
             local data = json.decode(msg)
