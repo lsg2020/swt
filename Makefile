@@ -77,7 +77,8 @@ LUAPROFILE_SOURCE=3rd/luaprofile/imap.c 3rd/luaprofile/profile.c 3rd/luaprofile/
 	git submodule update --init 3rd/luaprofile
 
 $(CLUALIB_DIR)/profile.so: $(LUAPROFILE_SOURCE)
-	gcc $(CFLAGS) $(SHARED) -DUSE_EXPORT_NAME $^ -o $@
+	#gcc $(CFLAGS) $(SHARED) -lprofiler -DUSE_EXPORT_NAME -DUSE_RDTSC $^ -o $@
+	gcc $(CFLAGS) $(SHARED) -DUSE_EXPORT_NAME -DUSE_RDTSC $^ -o $@
 
 # clean
 clean:
