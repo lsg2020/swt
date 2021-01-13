@@ -27,7 +27,7 @@ local code_template = [[
         end
         skynet.send(debug_address, 'lua', 'print', session, table.concat(out, '\t'))
     end
-    local env = setmetatable({print = debug_print, require = skynet.debug_require}, {__index = _G})
+    local env = setmetatable({print = debug_print}, {__index = _G})
     local f, err = load(%q, '@inject', 'bt', env)
     if not f then
         print(err)
@@ -92,7 +92,7 @@ function commands.run(id, msg)
 
             send_print(msg.session, table.concat(out, '\t'))
         end
-        local env = setmetatable({print = debug_print, require = skynet.debug_require}, {__index = _G})
+        local env = setmetatable({print = debug_print}, {__index = _G})
 
         ret, output = load(msg.script, "@debug", "bt", env)
         if ret then
