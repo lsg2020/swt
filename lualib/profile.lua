@@ -1,4 +1,5 @@
 local c = require "profile.c"
+c.init()
 
 local M = {
 }
