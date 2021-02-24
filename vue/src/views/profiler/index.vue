@@ -121,7 +121,8 @@ type DebugService = {
   base: Define.LuaService
   result: string
   error: string
-  tempPrint: string
+  tempMap: any
+  tempMax: number
 }
 
 @Component({
@@ -251,7 +252,7 @@ export default class extends Vue {
   onSelectNodeServiceChange(nodeServices: Define.LuaService[]) {
     this.curNodeServices = []
     nodeServices.forEach((node) => {
-      this.curNodeServices.push({ base: node, result: '', error: '', tempPrint: '' })
+      this.curNodeServices.push({ base: node, result: '', error: '', tempMap: null, tempMax: -1 })
     })
 
     if (this.runAmount == 0) {
@@ -308,13 +309,28 @@ export default class extends Vue {
         if (row.base.node && msg.node_id == row.base.node.addr && msg.addr == row.base.addr) { // eslint-disable-line
           if (msg.type == 'error') {
             row.error = msg.msg
+            row.tempMap = null
+            row.tempMax = -1
           }
-          if (msg.type == 'print') {
-            row.tempPrint += msg.msg.text
 
-            if (msg.msg.index == 0) {
-              row.result = row.tempPrint
-              row.tempPrint = ''
+          if (msg.type == 'print') {
+            if(row.tempMap == null){
+              row.tempMap = new Map()
+            }
+            row.tempMap.set(msg.msg.index, msg.msg.text)
+            if(msg.msg.index > row.tempMax){
+              row.tempMax = msg.msg.index
+            }
+
+            if(row.tempMap.get(0) != undefined){ // check ending
+              if(row.tempMap.size >= row.tempMax + 1){
+                row.result = ""
+                for(var k = row.tempMax; k >= 0; --k){
+                  row.result += row.tempMap.get(k)
+                }
+                row.tempMap = null
+                row.tempMax = -1
+              }
             }
           }
         }
