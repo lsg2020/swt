@@ -144,7 +144,7 @@ export default class extends Vue {
   flamegraphData: any = null
 
   websock: any = null
-  checkTime: number = 0
+  checkTime: number = 10
 
   buttonText: string = '开始'
   buttonTime: any = 0
