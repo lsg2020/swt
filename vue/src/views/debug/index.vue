@@ -97,7 +97,7 @@ import NodeFilter from '@/views/nodeFilter.vue'
 type DebugService = {
   base: Define.LuaService
   result: string
-  tempPrint: string
+  tempMap: any
 }
 
 @Component({
@@ -119,7 +119,7 @@ export default class extends Vue {
   onSelectNodeServiceChange(nodeServices: Define.LuaService[]) {
     this.curNodeServices = []
     nodeServices.forEach((node) => {
-      this.curNodeServices.push({ base: node, result: '', tempPrint: '' })
+      this.curNodeServices.push({ base: node, result: '', tempMap: null })
     })
     if (this.runAmount == 0) {
       this.currpage = 1
@@ -158,15 +158,24 @@ export default class extends Vue {
       for (let row of this.nodeServices) {
         // let row = this.nodeServices[k]
         if (row.base.node && msg.node_id == row.base.node.addr && msg.addr == row.base.addr) { // eslint-disable-line
-          if (msg.type == 'print') {
-            row.tempPrint += msg.msg.text
-
-            if (msg.msg.index == 0) {
-              row.result += `${msg.type}: ${row.tempPrint}\n`
-              row.tempPrint = ''
+          if (msg.type == 'error') {
+            row.result = `${msg.type}: ${msg.msg}\n`
+            row.tempMap = null
+          }else if (msg.type == 'print') {
+            if(row.tempMap == null){
+              row.tempMap = new Map()
+            }
+            row.tempMap.set(msg.msg.index, msg.msg.text)
+            if(row.tempMap.get(0) != undefined && row.tempMap.size >= msg.msg.max + 1){
+              let tempPrint = ""
+              for(var k = msg.msg.max; k >= 0; --k){
+                tempPrint += row.tempMap.get(k)
+              }
+              row.result = `${msg.type}: ${tempPrint}\n`
+              row.tempMap = null
             }
           } else {
-            row.result = row.result + `${msg.type}: ${msg.msg}\n`
+            row.result = `${msg.type}: ${msg.msg}\n`
           }
         }
       }
