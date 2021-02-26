@@ -57,7 +57,7 @@ local function send_print(session, text)
         agent_send(
             session2id[session],
             "debug_print",
-            {session = session, text = string.sub(text, s, e), index = max - i}
+            {session = session, text = string.sub(text, s, e), index = max - i, max = max}
         )
     end
 end

@@ -122,7 +122,6 @@ type DebugService = {
   result: string
   error: string
   tempMap: any
-  tempMax: number
 }
 
 @Component({
@@ -252,7 +251,7 @@ export default class extends Vue {
   onSelectNodeServiceChange(nodeServices: Define.LuaService[]) {
     this.curNodeServices = []
     nodeServices.forEach((node) => {
-      this.curNodeServices.push({ base: node, result: '', error: '', tempMap: null, tempMax: -1 })
+      this.curNodeServices.push({ base: node, result: '', error: '', tempMap: null })
     })
 
     if (this.runAmount == 0) {
@@ -310,27 +309,18 @@ export default class extends Vue {
           if (msg.type == 'error') {
             row.error = msg.msg
             row.tempMap = null
-            row.tempMax = -1
-          }
-
-          if (msg.type == 'print') {
+          }else if (msg.type == 'print') {
             if(row.tempMap == null){
               row.tempMap = new Map()
             }
             row.tempMap.set(msg.msg.index, msg.msg.text)
-            if(msg.msg.index > row.tempMax){
-              row.tempMax = msg.msg.index
-            }
-
-            if(row.tempMap.get(0) != undefined){ // check ending
-              if(row.tempMap.size >= row.tempMax + 1){
-                row.result = ""
-                for(var k = row.tempMax; k >= 0; --k){
-                  row.result += row.tempMap.get(k)
-                }
-                row.tempMap = null
-                row.tempMax = -1
+            if(row.tempMap.get(0) != undefined && row.tempMap.size >= msg.msg.max + 1){
+              let tempPrint = ""
+              for(var k = msg.msg.max; k >= 0; --k){
+                tempPrint += row.tempMap.get(k)
               }
+              row.result = tempPrint
+              row.tempMap = null
             }
           }
         }

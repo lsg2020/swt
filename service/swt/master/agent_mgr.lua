@@ -50,13 +50,13 @@ function mt:get(addr)
                 agent.name = msg.name
                 agent.type = msg.type
             elseif cmd == 'debug_print' then
-                local session, text, index = msg.session, msg.text, msg.index
+                local session, text, index, max = msg.session, msg.text, msg.index, msg.max
                 local cb = agent_mgr.sessions[session]
                 if not cb then
                     util.log_info("debug_print not exists session:%d", session)
                     return
                 end
-                cb("print", text, index)
+                cb("print", text, index, max)
             elseif cmd == 'debug_ret' then
                 local session, ret, output = msg.session, msg.ret, msg.output
                 local cb = agent_mgr.sessions[session]
@@ -117,9 +117,9 @@ function mt:debug_run(addr, script, target, print_cb)
     local ret, err
     local callback = function(type, ...)
         if type == "print" then
-            local text, index = ...
+            local text, index, max = ...
             if print_cb then
-                print_cb(text, index)
+                print_cb(text, index, max)
             else
                 if temp_print then
                     temp_print = temp_print .. text

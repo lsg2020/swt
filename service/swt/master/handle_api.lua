@@ -54,8 +54,8 @@ local function _debug_run(request, targets, script)
             target.node.addr,
             script,
             target.addr,
-            function(text, index)
-                response(target, "print", {text = text, index = index})
+            function(text, index, max)
+                response(target, "print", {text = text, index = index, max = max})
             end
         )
 
