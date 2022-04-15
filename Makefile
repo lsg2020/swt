@@ -1,10 +1,21 @@
+PLAT ?= none
+PLATS = linux freebsd macosx
+
+none :
+	@echo "Please do 'make PLATFORM' where PLATFORM is one of these:"
+	@echo "   $(PLATS)"
+
 .PHONY: all clean build skynet
 
 BUILD_DIR = $(PWD)/build
 BIN_DIR = $(BUILD_DIR)
 CLUALIB_DIR = $(BUILD_DIR)/clualib
 CSERVICE_DIR = $(BUILD_DIR)/cservice
-PLAT = linux
+
+linux : PLAT = linux
+macosx : PLAT = macosx
+freebsd : PLAT = freebsd
+linux macosx freebsd: all
 
 all: build
 
@@ -47,9 +58,12 @@ clean: clean-skynet
 # 3rd
 all: 3rd
 
+linux: CFLAGS = -g3 -O2 -rdynamic -Wall -Iskynet/3rd/lua -Iskynet/skynet-src
+linux: LDFLAGS += -lrt -pthread -lm -ldl
+macosx: CFLAGS = -dynamiclib -Wl,-undefined,dynamic_lookup -g3 -O2 -rdynamic -Iskynet/3rd/lua -Iskynet/skynet-src
+macosx: LDFLAGS += -pthread -lm -ldl
+
 SHARED = -fPIC --shared
-CFLAGS = -g3 -O2 -rdynamic -Wall -Iskynet/3rd/lua -Iskynet/skynet-src
-LDFLAGS += -lrt -pthread -lm -ldl
 CLUALIB=profile cjson
 CSERVICE=
 
