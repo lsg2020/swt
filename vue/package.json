@@ -48,7 +48,6 @@
     "babel-eslint": "^10.0.3",
     "eslint": "^6.2.2",
     "eslint-plugin-vue": "^5.2.3",
-    "fibers": "^4.0.1",
     "jest": "^24.9.0",
     "sass": "^1.22.10",
     "sass-loader": "^7.3.1",

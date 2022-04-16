@@ -121,7 +121,7 @@ export default class extends Vue {
     nodeServices.forEach((node) => {
       this.curNodeServices.push({ base: node, result: '', tempMap: null })
     })
-    if (this.runAmount == 0) {
+    if (this.runAmount === 0) {
       this.currpage = 1
       this.nodeServices = this.curNodeServices
     }
@@ -152,30 +152,30 @@ export default class extends Vue {
     this.nodeServices = this.curNodeServices
 
     this.websock = new WebSocket('ws://' + baseHost + '/api/debug_run')
-    this.websock.onmessage = async (event: any) => {
+    this.websock.onmessage = async(event: any) => {
       let text = await (new Response(event.data)).text()
       const msg = JSON.parse(text)
       for (let row of this.nodeServices) {
         // let row = this.nodeServices[k]
         if (row.base.node && msg.node_id == row.base.node.addr && msg.addr == row.base.addr) { // eslint-disable-line
-          if (msg.type == 'error') {
+          if (msg.type === 'error') {
             row.result = `${msg.type}: ${msg.msg}\n`
             row.tempMap = null
-          }else if (msg.type == 'print') {
-            if(row.tempMap == null){
+          } else if (msg.type === 'print') {
+            if (row.tempMap == null) {
               row.tempMap = new Map()
             }
             row.tempMap.set(msg.msg.index, msg.msg.text)
-            if(row.tempMap.get(0) != undefined && row.tempMap.size >= msg.msg.max + 1){
-              let tempPrint = ""
-              for(var k = msg.msg.max; k >= 0; --k){
+            if (row.tempMap.get(0) !== undefined && row.tempMap.size >= msg.msg.max + 1) {
+              let tempPrint = ''
+              for (var k = msg.msg.max; k >= 0; --k) {
                 tempPrint += row.tempMap.get(k)
               }
-              row.result = `${msg.type}: ${tempPrint}\n`
+              row.result += `${msg.type}: ${tempPrint}\n`
               row.tempMap = null
             }
           } else {
-            row.result = `${msg.type}: ${msg.msg}\n`
+            row.result += `${msg.type}: ${msg.msg}\n`
           }
         }
       }
