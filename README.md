@@ -3,6 +3,7 @@ skynet 火焰图 flamegraph + debug, 运行过程中随时启停profiler,方便�
 
 
 ## 使用说明
+* 确认skynet版本是否一至,有一点[修改](https://github.com/lsg2020/skynet/commit/4ace42e80814abfff6b8e64335061a206c674f96)
 * 引入调试命令 `SWT_RUN` 让服务支持debug脚本执行
     * 配置 `preload = "./lualib/swt/debug.lua"`
     * 或者在服务启动时 `require "swt.debug"`
