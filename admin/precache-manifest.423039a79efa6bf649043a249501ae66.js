@@ -1,31 +1,31 @@
 self.__precacheManifest = [
   {
-    "revision": "4902ae418cb637136054",
+    "revision": "ad811682d5ffaeefae3b",
     "url": "/admin/css/404.04075428.css"
   },
   {
-    "revision": "4902ae418cb637136054",
-    "url": "/admin/js/404.8d068726.js"
+    "revision": "ad811682d5ffaeefae3b",
+    "url": "/admin/js/404.c5fe2fdd.js"
   },
   {
-    "revision": "8b27087538ef6b744fd5",
-    "url": "/admin/js/Debug.3addf289.js"
+    "revision": "c9a00daf8caf60248d24",
+    "url": "/admin/js/Debug.9db52dac.js"
   },
   {
-    "revision": "19fadfa50147b1e26211",
-    "url": "/admin/js/Debug~Profiler.13b20cfe.js"
+    "revision": "df8f66f0c58ec54bac51",
+    "url": "/admin/js/Debug~Profiler.c373001c.js"
   },
   {
-    "revision": "18c4646fb2f407ccdf4e",
-    "url": "/admin/js/Profiler.76fd796d.js"
+    "revision": "52acf6ba563c5ab5bf81",
+    "url": "/admin/js/Profiler.61d29cbe.js"
   },
   {
-    "revision": "173689a6d5eca01b2c8c",
+    "revision": "11a8905b2b863822beed",
     "url": "/admin/css/app.b428ed95.css"
   },
   {
-    "revision": "173689a6d5eca01b2c8c",
-    "url": "/admin/js/app.b07676ff.js"
+    "revision": "11a8905b2b863822beed",
+    "url": "/admin/js/app.646d23d6.js"
   },
   {
     "revision": "5815f781c1c5a5266755",
@@ -36,16 +36,16 @@ self.__precacheManifest = [
     "url": "/admin/js/chunk-vendors.08c8f398.js"
   },
   {
-    "revision": "b011caf37e99fb57c375",
-    "url": "/admin/js/dashboard.faff2e1e.js"
+    "revision": "5864487308d29beadece",
+    "url": "/admin/js/dashboard.0676f976.js"
   },
   {
-    "revision": "c22a2d301ed0afbe0f98",
+    "revision": "bf117460ea0f89e4b149",
     "url": "/admin/css/login.e330e60a.css"
   },
   {
-    "revision": "c22a2d301ed0afbe0f98",
-    "url": "/admin/js/login.65563685.js"
+    "revision": "bf117460ea0f89e4b149",
+    "url": "/admin/js/login.e0a84561.js"
   },
   {
     "revision": "0f4bc32b0f52f7cfb7d19305a6517724",
@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/admin/img/404.a57b6f31.png"
   },
   {
-    "revision": "4e57f2d518912ce8ac8de4056322ae98",
+    "revision": "18d6129e1eed8cfd50d85a6de99f3188",
     "url": "/admin/index.html"
   },
   {
