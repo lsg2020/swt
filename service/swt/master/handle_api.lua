@@ -12,9 +12,11 @@ local apis = {}
 -- luacheck: ignore request
 function apis.agent_list(request)
     local agents = {}
-    for _, addr in ipairs(request.query.agents) do
-        local agent = agent_mgr:get(addr)
-        table.insert(agents, agent:build_info())
+    if request and request.query and request.query.agents then
+        for _, addr in ipairs(request.query.agents) do
+            local agent = agent_mgr:get(addr)
+            table.insert(agents, agent:build_info())
+        end
     end
 
     return agents

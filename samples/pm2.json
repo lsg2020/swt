@@ -1,0 +1,22 @@
+{
+    "apps": [
+      {
+        "name": "swt-monitor",
+        "cwd": "/home/wilson/workstation/swt/",
+        "script": "./build/skynet",
+        "args": "./samples/monitor/config",
+        "watch": false,
+        "error_file": "/home/wilson/workstation/swt/log/monitor-error.log",
+        "out_file": "/home/wilson/workstation/swt/log/monitor-out.log"
+      },
+      {
+        "name": "swt-game-1",
+        "cwd": "/home/wilson/workstation/swt/",
+        "script": "./build/skynet",
+        "args": "./samples/game-1/config",
+        "watch": false,
+        "error_file": "/home/wilson/workstation/swt/log/game-1-error.log",
+        "out_file": "/home/wilson/workstation/swt/log/game-1-out.log"
+      }
+    ]
+}

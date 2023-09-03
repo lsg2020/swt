@@ -8,7 +8,7 @@ export const getNodeList = async (agents: string[]) => {
     data
   })
 
-  return ret.data as Define.Node[]
+  return ret.data.data as Define.Node[]
 }
 
 export const getNodeServices = async (agents: string[]) => {
