@@ -68,7 +68,7 @@ end
 
 local function static(path, options, request)
     local real_path = request.path
-    if options and options.default and real_path == path then
+    if options and options.default and string.match(real_path, "^"..path.."[/]*$") then
         real_path = real_path .. "/" .. options.default
     end
 
