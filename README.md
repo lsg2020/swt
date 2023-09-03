@@ -59,7 +59,8 @@ skynet 火焰图 flamegraph + debug, 运行过程中随时启停profiler,方便�
 * 在 `dashboard#dashboard` 分页，在输入框添加 game-1/agent地址（本例为 192.168.3.9:10001）并提交，即可以获取显示该节点的信息，包含节点类型、节点名称、地址和状态（具体的数据流可查阅 `doc/火焰图swt框架.xls/dashboard#注册agent`）：
 ![Alt text](./doc/images/dashboard-game-1.png)
 
-* 进行profiler
+* 在 `dashboard#profiler` 分页，选择【节点类型】【类型名称】【服务】会显示出这个服务的信息（具体的数据流程可查阅 `doc/火焰图swt框架.xls/profiler#获取节点的服务列表`）:
+![Alt text](./doc/images/profiler-select-services.png)
 
 ## 使用说明
 * 以 admin 和 vue 的共同目录作为【根目录】即【根目录】

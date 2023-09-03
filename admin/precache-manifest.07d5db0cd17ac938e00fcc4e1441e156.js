@@ -12,20 +12,20 @@ self.__precacheManifest = [
     "url": "/admin/js/Debug.d3c1128a.js"
   },
   {
-    "revision": "ae003b094f3f0343b4d7",
-    "url": "/admin/js/Debug~Profiler.27c35081.js"
+    "revision": "bfd93251696971c615e3",
+    "url": "/admin/js/Debug~Profiler.98650516.js"
   },
   {
     "revision": "2afd7de9eceb482e71c8",
     "url": "/admin/js/Profiler.1a0b53ea.js"
   },
   {
-    "revision": "0f6a0fdc3abf929b0ed4",
+    "revision": "09fd8f896d6f29c6eeae",
     "url": "/admin/css/app.b428ed95.css"
   },
   {
-    "revision": "0f6a0fdc3abf929b0ed4",
-    "url": "/admin/js/app.c302814b.js"
+    "revision": "09fd8f896d6f29c6eeae",
+    "url": "/admin/js/app.e028fb97.js"
   },
   {
     "revision": "42bf3f6cbe57a391ac70",
@@ -36,8 +36,8 @@ self.__precacheManifest = [
     "url": "/admin/js/chunk-vendors.d14d9218.js"
   },
   {
-    "revision": "375c8ff43501803aa96d",
-    "url": "/admin/js/dashboard.c7f2ea9c.js"
+    "revision": "907ac79da780341a96c5",
+    "url": "/admin/js/dashboard.97c33c99.js"
   },
   {
     "revision": "9ac97f44b1943483cedd",
@@ -64,7 +64,7 @@ self.__precacheManifest = [
     "url": "/admin/img/404.a57b6f31.png"
   },
   {
-    "revision": "4a76351db1811ae20d080048860c38e1",
+    "revision": "d343872cc20f840da55bbfa760fabac8",
     "url": "/admin/index.html"
   },
   {

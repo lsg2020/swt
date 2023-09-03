@@ -19,5 +19,5 @@ export const getNodeServices = async (agents: string[]) => {
     data
   })
 
-  return ret.data
+  return ret.data.data
 }
