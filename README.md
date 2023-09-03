@@ -121,6 +121,10 @@ skynet 火焰图 flamegraph + debug, 运行过程中随时启停profiler,方便�
         在结合火焰图可以看出，bar_long() 的时长为 bar_short() 的5倍，和代码一样；而bar_long() 和 bar_short() 的上一层 bar_main() 则耗时更长一些，因为还有其他逻辑需要跑cpu
     【MEM】也类似的情况。
 
+* `bashboard#debug` 对服务发起调试
+如下图，选择 debug分页，选择好服务，例如foo服务，输入调试脚本内容，执行，最后可以在【结果栏】看到结果（具体的数据流程可查阅 `doc/火焰图swt框架.xls/debug#服务调试` ）
+![Alt text](./doc/images/debug-run-result.png)
+
 ## 使用说明
 * 以 admin 和 vue 的共同目录作为【根目录】即【根目录】
 * 不管是 master 还是 agent，都依赖于skynet框架，在启动master和agent前，需要确保skynet已经构建完成
