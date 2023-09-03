@@ -16,7 +16,7 @@ local function foo_main()
             tb[#tb+1] = k
         end
         foo_sub()
-        skynet.sleep(300)
+        skynet.sleep(100)
     end
 end
 

@@ -59,8 +59,67 @@ skynet 火焰图 flamegraph + debug, 运行过程中随时启停profiler,方便�
 * 在 `dashboard#dashboard` 分页，在输入框添加 game-1/agent地址（本例为 192.168.3.9:10001）并提交，即可以获取显示该节点的信息，包含节点类型、节点名称、地址和状态（具体的数据流可查阅 `doc/火焰图swt框架.xls/dashboard#注册agent`）：
 ![Alt text](./doc/images/dashboard-game-1.png)
 
-* 在 `dashboard#profiler` 分页，选择【节点类型】【类型名称】【服务】会显示出这个服务的信息（具体的数据流程可查阅 `doc/火焰图swt框架.xls/profiler#获取节点的服务列表`）:
-![Alt text](./doc/images/profiler-select-services.png)
+* `dashboard#profiler` 性能监控
+    * 在 `dashboard#profiler` 分页，选择【节点类型】【类型名称】【服务】会显示出这个服务的信息（具体的数据流程可查阅 `doc/火焰图swt框架.xls/profiler#获取节点的服务列表`）:
+    ![Alt text](./doc/images/profiler-select-services.png)
+
+    * 调整进行监控的时长，点击【开始】按钮，即可以让所选择的服务马上开始监控，时间达到时自动结束监控(具体的数据流程可查阅 `doc/火焰图swt框架.xls/profiler#对节点的服务进行profiler`)：
+    ![Alt text](./doc/images/profiler-start.png)
+
+    * 在监控结束后，`game-1/agent` 服务自动上报profiler结果到 `monitor/master`, 然后更新到 profiler页面上，此时服务行的【CPU】和【MEM】按钮变为可选状态：
+    ![Alt text](./doc/images/profiler-stoped.png)
+    点击【CPU】按钮，可以查看到【函数调用关系和时长】的火焰图：
+    ![Alt text](./doc/images/profiler-show-cpu.png)
+    在解析这个图前，先来看看 game-1/bar 服务做了什么：
+        ```lua
+        local skynet    = require "skynet"
+
+        local function bar_short()
+            local sum = 0
+            for k = 1, 10000 do
+                for h = 1, 10000 do
+                    sum = sum + 1
+                end
+            end
+        end
+
+        local function bar_long()
+            for k = 1, 5 do
+                bar_short()
+            end
+        end
+
+        local function bar_sub()
+            local sum = 0
+            for k = 1, 10000 do
+                for h = 1, 10000 do
+                    sum = sum + 1
+                end
+            end
+            bar_short()
+            bar_long()
+        end
+
+        local function bar_main()
+            while true do
+                local tb = {}
+                for k = 1, 10000 do
+                    tb[#tb+1] = k
+                end
+                bar_sub()
+                skynet.sleep(100)
+            end
+        end
+
+        skynet.start(function ()
+            print("bar service started")
+            skynet.fork(bar_main)
+        end)
+
+        ```
+        主要是在 bar_main() 调用了长耗时的 bar_long() 和 短耗时的bar_short()
+        在结合火焰图可以看出，bar_long() 的时长为 bar_short() 的5倍，和代码一样；而bar_long() 和 bar_short() 的上一层 bar_main() 则耗时更长一些，因为还有其他逻辑需要跑cpu
+    【MEM】也类似的情况。
 
 ## 使用说明
 * 以 admin 和 vue 的共同目录作为【根目录】即【根目录】
