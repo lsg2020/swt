@@ -64,6 +64,7 @@ end
 
 local commands = {}
 function commands.run(id, msg)
+    util.log_debug("[handle_debug] id:%s, run:%s", tostring(id), tostring(msg.script))
     local session = msg.session
     session2id[session] = id
 

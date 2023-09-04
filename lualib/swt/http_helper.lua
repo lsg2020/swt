@@ -26,9 +26,19 @@ local function response(id, code, resp)
 end
 
 local function upgrade(handle_agent, request)
-    local ok, err = websocket.accept(request.id, handle_agent, "ws", request.addr, {upgrade = {header = request.headers, method = request.method, url = request.url}})
-    if not ok and handle_agent.error then
-        handle_agent.error(request.id, err)
+    local ok, err = websocket.accept(request.id, handle_agent, "ws", request.addr, 
+        {
+            upgrade = {
+                header = request.headers, 
+                method = request.method, 
+                url = request.url
+            }
+        })
+    if not ok then
+        util.log_debug("[http_helper] upgrade-accept failed:%s", tostring(err))
+        if handle_agent.error then
+            handle_agent.error(request.id, err)
+        end
     end
 end
 

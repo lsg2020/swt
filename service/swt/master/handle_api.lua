@@ -49,6 +49,7 @@ end
 local function _debug_run(request, targets, script)
     local function response(target, type, msg)
         if request.socket_close then
+            util.log_debug("[handle_api] response failed: request socket closed")
             return
         end
         websocket.write(request.id,
@@ -123,14 +124,15 @@ function apis.profiler(request)
                 print(profile.stop())
                 ]]
                 script = string.format(script, time)
-
                 _debug_run(request, targets, script)
             end
         end,
         error = function()
+            assert(false)
             request.socket_close = true
         end,
         close = function()
+            util.log_debug("[handle_api] request socket closed:%s", debug.traceback())
             request.socket_close = true
         end
     }

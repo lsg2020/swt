@@ -4,7 +4,3 @@
 [submodule "3rd/luaprofile"]
 	path = 3rd/luaprofile
 	url = https://github.com/lsg2020/luaprofile
-[submodule "skynet"]
-	path = skynet
-	url = https://github.com/lsg2020/skynet
-	branch = skynet_profile
