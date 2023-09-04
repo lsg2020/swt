@@ -27,9 +27,9 @@ function apis.agent_services(request)
     local test = [[
         local skynet = require "skynet"
         local service_list = skynet.call(".launcher", "lua", "list")
-        --if sfg_raw_print then
+        --if swt_raw_print then
         --    for k, v in pairs(service_list) do
-        --        sfg_raw_print("[sfg-service-info]:", k, v)
+        --        swt_raw_print("[swt-service-info]:", k, v)
         --    end
         --end
         print(service_list)
@@ -128,11 +128,11 @@ function apis.profiler(request)
             end
         end,
         error = function()
-            assert(false)
+            util.log_debug("[handle_api] request socket error.")
             request.socket_close = true
         end,
         close = function()
-            util.log_debug("[handle_api] request socket closed:%s", debug.traceback())
+            util.log_debug("[handle_api] request socket closed")
             request.socket_close = true
         end
     }

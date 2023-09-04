@@ -102,6 +102,7 @@ $(CLUALIB_DIR)/profile.so: $(LUAPROFILE_SOURCE)
 .PHONY: vue
 build_vue:
 	cd vue && npm install
+	# export NODE_OPTIONS=--openssl-legacy-provider
 	cd vue && npm run build
 	
 # clean ####################################

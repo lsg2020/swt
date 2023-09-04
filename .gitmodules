@@ -4,3 +4,6 @@
 [submodule "3rd/luaprofile"]
 	path = 3rd/luaprofile
 	url = https://github.com/lsg2020/luaprofile
+[submodule "skynet"]
+	path = skynet
+	url = ssh://git@192.168.3.10:10022/wilson/skynet.git

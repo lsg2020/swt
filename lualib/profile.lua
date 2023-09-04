@@ -7,19 +7,6 @@ local M = {
 local old_co_create = coroutine.create
 local old_co_wrap = coroutine.wrap
 
-function coroutine.create(f)
-    return old_co_create(function (...)
-            c.mark()
-            return f(...)
-        end)
-end
-
-function coroutine.wrap(f)
-    return old_co_wrap(function (...)
-            c.mark()
-            return f(...)
-        end)
-end
 
 local exists = 0
 function M.start()

@@ -20,7 +20,7 @@ harbor = 0
 start = "main"	-- main script
 bootstrap = "snlua bootstrap"	-- The service for bootstrap
 
-SFG_NODE_TYPE = "game-app"
-SFG_NODE_NAME = "game-1"
-SFG_AGENT_PORT = 10001
-SFG_ENABLE_DEBUG = true
+SWT_NODE_TYPE = "game-app"
+SWT_NODE_NAME = "game-1"
+SWT_AGENT_PORT = 10001
+SWT_ENABLE_DEBUG = false

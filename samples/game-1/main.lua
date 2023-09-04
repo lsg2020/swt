@@ -1,18 +1,14 @@
 local skynet    = require "skynet"
 local swt       = require "swt"
 
-SFG_NODE_TYPE = "game-app"
-SFG_NODE_NAME = "node-1"
-SFG_AGENT_PORT = 9528
-
 local function get_node_infos()
-    local node_type = skynet.getenv("SFG_NODE_TYPE")
+    local node_type = skynet.getenv("SWT_NODE_TYPE")
     assert(node_type)
 
-    local node_name = skynet.getenv("SFG_NODE_NAME")
+    local node_name = skynet.getenv("SWT_NODE_NAME")
     assert(node_name)
     
-    local port = skynet.getenv("SFG_AGENT_PORT")
+    local port = skynet.getenv("SWT_AGENT_PORT")
     assert(port)
     port = tonumber(port)
     assert(port and type(port) == "number")
