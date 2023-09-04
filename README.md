@@ -128,8 +128,14 @@ skynet 火焰图 flamegraph + debug, 运行过程中随时启停profiler,方便�
 ## 使用说明
 * 以 admin 和 vue 的共同目录作为【根目录】即【根目录】
 * 不管是 master 还是 agent，都依赖于skynet框架，在启动master和agent前，需要确保skynet已经构建完成
-* master 的skynet并无版本要求
-* agent 的skynet 需要包含项目的skynet改动，确认skynet版本是否一至,有一点[修改](https://github.com/lsg2020/skynet/commit/4ace42e80814abfff6b8e64335061a206c674f96)
+* master 说明：
+    1. 对skynet并无版本要求
+    2. 依赖于vue做 admin 管理页面
+* agent 说明：
+    1. 使用 【luaprofile】进行性能监控：https://github.com/wilsonloo/luaprofile.git
+    2. 使用 skynet 的定制版本：https://github.com/wilsonloo/skynet/commit/536e6b8624ccac56680ff49b7de1882eb857c79c，请确定版本是否一致；
+        * 目的是为了和  【luaprofile】 配套使用；
+        * 可以cherry-pick 这个skynet的commit，也可以手抄到自己所在项目代码里
 
 ## 如何构建
 ```sh
