@@ -1,0 +1,26 @@
+root = "./skynet/"
+
+luaservice = "samples/game-1/?.lua;samples/game-1/?/main.lua;"
+luaservice = luaservice .. "service/?.lua;service/?/main.lua;"
+luaservice = luaservice .. root.."service/?.lua;"..root.."test/?.lua;"..root.."examples/?.lua;"..root.."test/?/init.lua"
+
+lua_path = "lualib/?.lua;lualib/?/init.lua;"
+lua_path = lua_path .. root.."lualib/?.lua;"..root.."lualib/?/init.lua"
+
+lua_cpath = "build/clualib/?.so;" .. root .. "luaclib/?.so"
+lualoader = root .. "lualib/loader.lua"
+snax = root.."examples/?.lua;"..root.."test/?.lua"
+cpath = "build/cservice/?.so;" .. root.."cservice/?.so"
+
+preload = "./lualib/swt/debug.lua"
+thread = 8
+logger = nil
+logpath = "."
+harbor = 0
+start = "main"	-- main script
+bootstrap = "snlua bootstrap"	-- The service for bootstrap
+
+SWT_NODE_TYPE = "game-app"
+SWT_NODE_NAME = "game-1"
+SWT_AGENT_PORT = 10001
+SWT_ENABLE_DEBUG = false

@@ -4,6 +4,7 @@ local websocket     = require "http.websocket"
 local global    = require "global"
 local json      = require "cjson"
 local http_helper   = require "swt.http_helper"
+local util = require "swt.util"
 
 local agent_mgr = global.agent_mgr
 
@@ -12,9 +13,11 @@ local apis = {}
 -- luacheck: ignore request
 function apis.agent_list(request)
     local agents = {}
-    for _, addr in ipairs(request.query.agents) do
-        local agent = agent_mgr:get(addr)
-        table.insert(agents, agent:build_info())
+    if request and request.query and request.query.agents then
+        for _, addr in ipairs(request.query.agents) do
+            local agent = agent_mgr:get(addr)
+            table.insert(agents, agent:build_info())
+        end
     end
 
     return agents
@@ -24,13 +27,20 @@ function apis.agent_services(request)
     local test = [[
         local skynet = require "skynet"
         local service_list = skynet.call(".launcher", "lua", "list")
+        --if swt_raw_print then
+        --    for k, v in pairs(service_list) do
+        --        swt_raw_print("[swt-service-info]:", k, v)
+        --    end
+        --end
         print(service_list)
     ]]
     local output = {}
-    for _, addr in pairs(request.query.agents) do
-        local ok, ret, resp = pcall(agent_mgr.debug_run, agent_mgr, addr, test)
-        if ok and ret then
-            output[addr] = json.decode(resp)
+    if request.query.agents then
+        for _, addr in pairs(request.query.agents) do
+            local ok, ret, resp = pcall(agent_mgr.debug_run, agent_mgr, addr, test)
+            if ok and ret then
+                output[addr] = json.decode(resp)
+            end
         end
     end
     return output
@@ -39,6 +49,7 @@ end
 local function _debug_run(request, targets, script)
     local function response(target, type, msg)
         if request.socket_close then
+            util.log_debug("[handle_api] response failed: request socket closed")
             return
         end
         websocket.write(request.id,
@@ -113,14 +124,15 @@ function apis.profiler(request)
                 print(profile.stop())
                 ]]
                 script = string.format(script, time)
-
                 _debug_run(request, targets, script)
             end
         end,
         error = function()
+            util.log_debug("[handle_api] request socket error.")
             request.socket_close = true
         end,
         close = function()
+            util.log_debug("[handle_api] request socket closed")
             request.socket_close = true
         end
     }
@@ -130,8 +142,11 @@ end
 return function(router)
     router:any("/api/:subcmd", function(request)
         local cmd = request.subcmd
+        util.log_debug("[handle_api] handling %s ...", "/api/"..cmd)
+        
         if not apis[cmd] then
             http_helper.response(request.id, 404, {code = 20404, message = string.format("cmd:%s not found", cmd)})
+            util.log_debug("unknown cmd")            
             return
         end
 

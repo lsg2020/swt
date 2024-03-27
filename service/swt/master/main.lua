@@ -18,6 +18,7 @@ function command.start(listen_addr)
         end
     end)
 
+    util.log_info("swt/master start listening at %s...", listen_addr)
     local http_socket = socket.listen(listen_addr:match("([^:]+):(%d+)"))
     socket.start(http_socket, function(id, addr)
         socket.start(id)

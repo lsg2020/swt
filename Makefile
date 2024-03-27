@@ -56,6 +56,7 @@ clean: clean-skynet
 
 
 # 3rd
+.PHONY: 3rd
 all: 3rd
 
 linux: CFLAGS = -g3 -O2 -rdynamic -Wall -Iskynet/3rd/lua -Iskynet/skynet-src
@@ -74,6 +75,7 @@ CSERVICE_TARGET=$(patsubst %, $(CSERVICE_DIR)/%.so, $(CSERVICE))
 3rd: $(CLUALIB_TARGET) \
 	$(CSERVICE_TARGET)
 
+# lua cjson ####################################
 CJSON_SOURCE=3rd/lua-cjson/lua_cjson.c \
 	3rd/lua-cjson/strbuf.c \
 	3rd/lua-cjson/fpconv.c
@@ -84,8 +86,10 @@ CJSON_SOURCE=3rd/lua-cjson/lua_cjson.c \
 $(CLUALIB_DIR)/cjson.so: $(CJSON_SOURCE)
 	gcc $(CFLAGS) -I3rd/lua-cjson $(SHARED) $^ -o $@ $(LDFLAGS)
 
-# lua profile
-LUAPROFILE_SOURCE=3rd/luaprofile/imap.c 3rd/luaprofile/profile.c 3rd/luaprofile/icallpath.c
+# lua profile ####################################
+LUAPROFILE_SOURCE=3rd/luaprofile/imap.c \
+	3rd/luaprofile/profile.c \
+	3rd/luaprofile/icallpath.c
 
 3rd/luaprofile/imap.c:
 	git submodule update --init 3rd/luaprofile
@@ -94,6 +98,13 @@ $(CLUALIB_DIR)/profile.so: $(LUAPROFILE_SOURCE)
 	#gcc $(CFLAGS) $(SHARED) -lprofiler -DUSE_EXPORT_NAME -DUSE_RDTSC $^ -o $@
 	gcc $(CFLAGS) $(SHARED) -DUSE_EXPORT_NAME -DUSE_RDTSC $^ -o $@
 
-# clean
+# vue ####################################
+.PHONY: vue
+build_vue:
+	cd vue && npm install
+	# export NODE_OPTIONS=--openssl-legacy-provider
+	cd vue && npm run build
+	
+# clean ####################################
 clean:
 	-rm -rf $(BUILD_DIR)

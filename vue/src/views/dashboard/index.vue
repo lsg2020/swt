@@ -109,8 +109,12 @@ export default class extends Vue {
   }
 
   async query() {
-    let targets = this.targets.split('\n')
-    this.nodes = await ApiNode.getNodeList(targets)
+    if(this.targets == null || this.targets == ""){
+      this.nodes = []
+    }else{
+      let targets = this.targets.split('\n')
+      this.nodes = await ApiNode.getNodeList(targets)
+    }
   }
 }
 </script>

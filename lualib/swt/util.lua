@@ -1,6 +1,16 @@
 local json      = require "cjson"
+local skynet    = require "skynet"
+
+local SWT_ENABLE_DEBUG = skynet.getenv("SWT_ENABLE_DEBUG")
+SWT_ENABLE_DEBUG = (SWT_ENABLE_DEBUG == true or SWT_ENABLE_DEBUG == "true")
 
 local M = {}
+
+function M.log_debug(...)
+    if SWT_ENABLE_DEBUG then
+        print(string.format(...))
+    end
+end
 
 function M.log_info(...)
     print(string.format(...))
